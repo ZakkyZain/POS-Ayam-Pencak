@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stok Bahan - Ayam Pencak</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="h-screen overflow-hidden flex bg-[#f8fafc]">
+
+    <aside class="w-20 lg:w-64 bg-white border-r border-gray-200 flex flex-col transition-all">
+        <div class="p-6">
+            <div class="flex items-center gap-3">
+                <div id="logo-container">
+                    <img src="asset/logo.png" id="logo-asset" alt="Logo" onerror="this.src='https://via.placeholder.com/40'">
+                </div>
+                <div class="hidden lg:block overflow-hidden text-nowrap">
+                    <h1 class="text-sm font-black text-gray-800 leading-none uppercase tracking-tighter">Ayam Pencak</h1>
+                    <span class="text-[10px] text-red-500 font-bold uppercase tracking-widest">Point Of Sale</span>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="flex-1 px-4 space-y-2 mt-4">
+            <a href="index.html" class="nav-item w-full flex items-center gap-4 px-4 py-3 rounded-xl font-semibold transition text-gray-400 hover:bg-gray-50">
+                <i class="fas fa-chart-pie w-5"></i>
+                <span class="hidden lg:block">Dashboard</span>
+            </a>
+            <a href="kasir.html" class="nav-item w-full flex items-center gap-4 px-4 py-3 rounded-xl font-semibold transition text-gray-400 hover:bg-gray-50">
+                <i class="fas fa-th-large w-5"></i>
+                <span class="hidden lg:block">Kasir</span>
+            </a>
+            <a href="stok.html" class="nav-item active w-full flex items-center gap-4 px-4 py-3 rounded-xl font-semibold transition text-green-600 bg-green-50">
+                <i class="fas fa-boxes w-5"></i>
+                <span class="hidden lg:block">Stok Bahan</span>
+            </a>
+            <a href="laporan.html" class="nav-item w-full flex items-center gap-4 px-4 py-3 rounded-xl font-semibold transition text-gray-400 hover:bg-gray-50">
+                <i class="fas fa-file-invoice-dollar w-5"></i>
+                <span class="hidden lg:block">Laporan</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 p-10 overflow-y-auto custom-scrollbar">
+        <header class="mb-8 flex justify-between items-center">
+            <div>
+                <h2 class="text-2xl font-black text-gray-800 uppercase tracking-tight">Manajemen Stok Bahan</h2>
+                <p class="text-gray-400 text-sm">Kelola sisa bahan baku produksi</p>
+            </div>
+            <button onclick="openStockModal()" class="bg-green-500 text-white px-6 py-2 rounded-xl font-bold shadow-lg shadow-green-100 hover:bg-green-600 transition">
+                + Tambah Bahan
+            </button>
+        </header>
+
+        <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 text-gray-400 text-[10px] font-bold uppercase tracking-widest">
+                    <tr>
+                        <th class="p-6">Nama Bahan</th>
+                        <th class="p-6">Jumlah Sisa</th>
+                        <th class="p-6">Satuan</th>
+                        <th class="p-6">Status</th>
+                        <th class="p-6 text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryTableBody" class="divide-y divide-gray-50 text-sm font-medium text-gray-700">
+                    </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div id="stockModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-[2.5rem] w-96 shadow-2xl">
+            <h3 class="text-xl font-black mb-6 text-gray-800" id="modalTitle">Tambah Bahan</h3>
+            <div class="space-y-4">
+                <input type="hidden" id="editIngId">
+                <div>
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Nama Bahan</label>
+                    <input type="text" id="ingName" class="w-full bg-gray-50 border-none p-4 rounded-2xl outline-none focus:ring-2 focus:ring-green-500 transition">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Jumlah</label>
+                        <input type="number" id="ingStock" step="0.01" class="w-full bg-gray-50 border-none p-4 rounded-2xl outline-none focus:ring-2 focus:ring-green-500 transition">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Satuan</label>
+                        <select id="ingUnit" class="w-full bg-gray-50 border-none p-4 rounded-2xl outline-none focus:ring-2 focus:ring-green-500 transition">
+                            <option value="pcs">pcs</option>
+                            <option value="gram">gram</option>
+                            <option value="Liter">Liter</option>
+                            <option value="ml">ml</option>
+                            <option value="biji">biji</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-3 mt-8">
+                <button onclick="closeStockModal()" class="flex-1 py-4 font-bold text-gray-400 transition">Batal</button>
+                <button onclick="saveIngredient()" class="flex-1 bg-green-500 text-white py-4 rounded-2xl font-bold shadow-lg shadow-green-100 hover:bg-green-600 transition">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="stok.js"></script>
+</body>
+</html>

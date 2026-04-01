@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Penjualan - Ayam Pencak</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="h-screen overflow-hidden flex bg-[#f8fafc]">
+
+    <aside class="w-64 min-w-[256px] max-w-[256px] bg-white border-r border-gray-200 flex flex-col no-print h-screen">
+        <div class="p-6 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div id="logo-container" class="w-11 h-11 flex-shrink-0 bg-green-500 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-green-100">
+                    <img src="asset\logo.png" id="logo-asset" class="w-full h-full object-cover" alt="Logo">
+                </div>
+                <div class="hidden lg:block overflow-hidden text-nowrap">
+                    <h1 class="text-sm font-black text-gray-800 leading-none uppercase tracking-tighter">Ayam Pencak</h1>
+                    <span class="text-[10px] text-red-500 font-bold uppercase tracking-widest">Point of Sale</span>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="flex-1 px-4 space-y-1 mt-4">
+            <a href="index.html" class="nav-item w-full flex items-center gap-4 px-4 py-3 rounded-xl font-semibold transition text-gray-400 hover:bg-gray-50">
+                <i class="fas fa-chart-pie w-5 text-center"></i>
+                <span class="hidden lg:block">Dashboard</span>
+            </a>
+            
+            <a href="kasir.html" class="nav-item w-full flex items-center gap-4 px-4 py-3 rounded-xl font-semibold transition text-gray-400 hover:bg-gray-50">
+                <i class="fas fa-th-large w-5 text-center"></i>
+                <span class="hidden lg:block">Kasir</span>
+            </a>
+
+            <a href="stok.html" class="nav-item w-full flex items-center gap-4 px-4 py-3 rounded-xl font-semibold transition text-gray-400 hover:bg-gray-50">
+                <i class="fas fa-boxes w-5 text-center"></i>
+                <span class="hidden lg:block">Stok Bahan</span>
+            </a>
+
+            <a href="laporan.html" class="nav-item active w-full flex items-center gap-4 px-4 py-3 rounded-xl font-semibold transition text-green-600 bg-green-50 border-r-4 border-green-500">
+                <i class="fas fa-file-invoice-dollar w-5 text-center"></i>
+                <span class="hidden lg:block">Laporan</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-gray-100 flex-shrink-0">
+            <button class="w-full flex items-center gap-4 px-4 py-3 text-gray-400 hover:text-red-500 transition font-semibold text-sm">
+                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                <span class="hidden lg:block">Tutup Outlet</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+        <div class="max-w-5xl mx-auto">
+            <header class="flex justify-between items-center mb-8 no-print">
+                <div>
+                    <h2 class="text-2xl font-black text-gray-800">Laporan Penjualan</h2>
+                    <p class="text-gray-400 text-sm">Riwayat transaksi harian Anda</p>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="window.print()" class="bg-green-500 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-green-100 hover:bg-green-600 transition flex items-center gap-2">
+                        <i class="fas fa-print"></i> Cetak PDF
+                    </button>
+                    <button onclick="clearSalesData()" class="bg-red-50 text-red-500 px-6 py-3 rounded-xl font-bold hover:bg-red-100 transition">
+                        Reset Data
+                    </button>
+                </div>
+            </header>
+
+            <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden p-8">
+                <div class="flex justify-between items-start mb-10 border-b border-gray-50 pb-8">
+                    <div>
+                        <h3 class="text-xl font-black text-gray-800 uppercase">Ayam Pencak</h3>
+                        <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest">Laporan Penjualan Retail</p>
+                    </div>
+                    <div class="text-right">
+                        <p id="currentDate" class="text-sm font-bold text-gray-700"></p>
+                    </div>
+                </div>
+
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="text-gray-400 text-[10px] font-bold uppercase tracking-widest border-b border-gray-50">
+                            <th class="pb-4 px-2">Waktu</th>
+                            <th class="pb-4 px-2">ID Transaksi</th>
+                            <th class="pb-4 px-2">Daftar Menu</th>
+                            <th class="pb-4 px-2 text-right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportTableBody" class="divide-y divide-gray-50 text-sm">
+                        </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="pt-10 text-right font-bold text-gray-400 uppercase text-[10px] tracking-widest">Total Pendapatan Bersih</td>
+                            <td id="reportGrandTotal" class="pt-10 text-right font-black text-2xl text-green-600">Rp 0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+
+    <script>
+        function renderReport() {
+        const sales = JSON.parse(localStorage.getItem('sales_report')) || [];
+        const tableBody = document.getElementById('reportTableBody');
+        let grandTotal = 0;
+
+        if (sales.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="4" class="py-20 text-center text-gray-300 italic">Belum ada transaksi tersimpan.</td></tr>`;
+            document.getElementById('reportGrandTotal').innerText = "Rp 0";
+            return;
+        }
+
+        tableBody.innerHTML = [...sales].reverse().map(trx => {
+            grandTotal += trx.total;
+            const itemsName = trx.items.map(i => `${i.name} (${i.qty})`).join(', ');
+            return `
+                <tr class="hover:bg-gray-50 transition border-b border-gray-50">
+                    <td class="py-4 px-2 font-medium text-gray-600">${trx.date}</td>
+                    <td class="py-4 px-2 font-mono text-[10px] text-gray-400">${trx.id}</td>
+                    <td class="py-4 px-2 text-gray-500 max-w-xs truncate">${itemsName}</td>
+                    <td class="py-4 px-2 text-right font-bold text-gray-700">Rp ${trx.total.toLocaleString()}</td>
+                </tr>
+            `;
+        }).join('');
+
+        document.getElementById('reportGrandTotal').innerText = `Rp ${grandTotal.toLocaleString()}`;
+        document.getElementById('currentDate').innerText = new Date().toLocaleDateString('id-ID', { dateStyle: 'full' });
+    }
+
+    function clearSalesData() {
+        if(confirm("PERINGATAN: Hapus semua data laporan penjualan?")) {
+            localStorage.removeItem('sales_report');
+            renderReport();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderReport);
+</script>
+</body>
+</html>

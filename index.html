@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Ayam Pencak</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="h-screen overflow-hidden flex bg-[#f8fafc]">
+
+    <aside class="w-20 lg:w-64 bg-white border-r border-gray-200 flex flex-col transition-all">
+        <div class="p-6">
+            <div class="flex items-center gap-3">
+                <div id="logo-container">
+                    <img src="asset/logo.png" id="logo-asset" alt="Logo" onerror="this.src='https://via.placeholder.com/40'">
+                </div>
+                <div class="hidden lg:block overflow-hidden text-nowrap">
+                    <h1 class="text-sm font-black text-gray-800 leading-none uppercase tracking-tighter">Ayam Pencak</h1>
+                    <span class="text-[10px] text-red-500 font-bold uppercase tracking-widest">Point of Sale</span>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="flex-1 px-4 space-y-2 mt-4">
+            <a href="index.html" class="nav-item active w-full flex items-center gap-4 px-4 py-3 rounded-xl font-semibold transition bg-green-50 text-green-600">
+                <i class="fas fa-chart-pie w-5"></i>
+                <span class="hidden lg:block">Dashboard</span>
+            </a>
+            <a href="kasir.html" class="nav-item w-full flex items-center gap-4 px-4 py-3 rounded-xl font-semibold transition text-gray-400 hover:bg-gray-50">
+                <i class="fas fa-th-large w-5"></i>
+                <span class="hidden lg:block">Kasir</span>
+            </a>
+            <a href="stok.html" class="nav-item w-full flex items-center gap-4 px-4 py-3 rounded-xl font-semibold transition text-gray-400 hover:bg-gray-50">
+                <i class="fas fa-boxes w-5"></i>
+                <span class="hidden lg:block">Stok Bahan</span>
+            </a>
+            <a href="laporan.html" class="nav-item w-full flex items-center gap-4 px-4 py-3 rounded-xl font-semibold transition text-gray-400 hover:bg-gray-50">
+                <i class="fas fa-file-invoice-dollar w-5"></i>
+                <span class="hidden lg:block">Laporan</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+        <header class="flex justify-between items-center mb-8">
+            <div>
+                <h2 class="text-2xl font-black text-gray-800">Ringkasan Penjualan</h2>
+                <p id="lastUpdate" class="text-gray-400 text-sm">Update terakhir: Memuat...</p>
+            </div>
+            <button class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 font-bold text-sm text-gray-600">
+                <i class="fas fa-calendar-alt mr-2 text-green-500"></i> <span id="displayMonth">April 2026</span>
+            </button>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-50">
+                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center mb-4 text-xl">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Total Pendapatan</p>
+                <h3 id="totalRevenue" class="text-xl font-black text-gray-800">Rp 0</h3>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-50">
+                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mb-4 text-xl">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Total Pesanan</p>
+                <h3 id="totalTransactions" class="text-xl font-black text-gray-800">0 Transaksi</h3>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-50">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-4 text-xl">
+                    <i class="fas fa-users"></i>
+                </div>
+                <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Estimasi Pelanggan</p>
+                <h3 id="totalCustomers" class="text-xl font-black text-gray-800">0 Orang</h3>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-50">
+                <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mb-4 text-xl">
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Status Operasional</p>
+                <h3 class="text-xl font-black text-gray-800">AKTIF</h3>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-50">
+                <h3 class="font-black text-gray-800 mb-6 uppercase text-sm tracking-widest">Menu Terlaris</h3>
+                <div id="topMenuContainer" class="space-y-6">
+                    <p class="text-gray-300 text-xs italic">Memuat data...</p>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-50 flex flex-col items-center justify-center min-h-[300px]">
+                <i class="fas fa-chart-line text-gray-100 text-6xl mb-4"></i>
+                <p class="text-gray-400 font-bold">Aktivitas Penjualan</p>
+                <p class="text-xs text-gray-300 italic text-center">Data divisualisasikan berdasarkan riwayat transaksi yang tersimpan.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="data.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
